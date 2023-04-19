@@ -9,7 +9,10 @@
 #                   make
 #                   -y ffmpeg
 #                   time
-# pip3 install gps
+#                   python3-smbus
+#
+# pip3 install  gps
+#               mpu6050-raspberrypi
 #                   
 # sudo apt-get install gpsd gpsd-clients
 #
