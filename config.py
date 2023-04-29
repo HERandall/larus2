@@ -31,6 +31,7 @@ import busio
 import adafruit_gps
 import adafruit_mpu6050
 import bme680
+from picamera2 import Picamera2, Preview
 from subprocess import PIPE, Popen
 
 uart = busio.UART(boart.TX, board.RX, buadrate= 9600, timeout=10)
@@ -59,13 +60,74 @@ savedata = f"data_{date_integer}.csv"
 with open(savedata, 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
 
-    writer.writerow(['Time (s)', 'Count', 'Latitude (Degrees)', 'Latitude (Minutes)', 'Longitude (Degrees)', 'Longitude (Minutes)', 'Altitude (m)', 'Ground Speed (Knots)', 'No. of Satellites', 'Pressure (Pa)', 'Temperature (C)', 'Humidity', 'Acceleration x (m/s^2)','Acceleration y (m/s^2)','Acceleration z (m/s^2)', 'Gyroscope x (rad/s)','Gyroscope y (rad/s)','Gyroscope z (rad/s)', 'mpu-6050 Temperature (C)'])
+    writer.writerow(
+        [
+            'Time (s)', 
+            'Count', 
+            'Latitude (Degrees)', 
+            'Latitude (Minutes)', 
+            'Longitude (Degrees)', 
+            'Longitude (Minutes)', 
+            'Altitude (m)', 
+            'Ground Speed (Knots)', 
+            'No. of Satellites', 
+            'Pressure (Pa)', 
+            'Temperature (C)', 
+            'Humidity', 
+            'Acceleration x (m/s^2)',
+            'Acceleration y (m/s^2)',
+            'Acceleration z (m/s^2)', 
+            'Gyroscope x (rad/s)',
+            'Gyroscope y (rad/s)',
+            'Gyroscope z (rad/s)', 
+            'mpu-6050 Temperature (C)'
+        ]
+    )
 
     count = 0
     while True:
         if gps.has_fix:
-            writer.writerow([time.monotonic(), count, gps.latitude_degrees, gps.latitude_minutes, gps.longitude_degrees, gps.longitude_minutes, gps.altitude_m, gps.speed_knots, gps.satellites, bme.data.pressure, bme.data.temperature, bme.data.humidity, mpu.acceleration[0], mpu.acceleration[1], mpu.acceleration[2], mpu.gyro[0], mpu.gyro[1], mpu.gyro[2], mpu.temperature])
+            writer.writerow(
+                [
+                    time.monotonic(), 
+                    count, 
+                    gps.latitude_degrees, 
+                    gps.latitude_minutes, 
+                    gps.longitude_degrees, 
+                    gps.longitude_minutes, 
+                    gps.altitude_m, 
+                    gps.speed_knots, 
+                    gps.satellites, 
+                    bme.data.pressure, 
+                    bme.data.temperature, 
+                    bme.data.humidity, 
+                    mpu.acceleration[0], 
+                    mpu.acceleration[1], 
+                    mpu.acceleration[2], 
+                    mpu.gyro[0], 
+                    mpu.gyro[1], 
+                    mpu.gyro[2], 
+                    mpu.temperature
+                ]
+            )
         else:
+            writer.writerow(
+                [
+                    time.monotonic(), 
+                    count, 
+                    0, 0, 0, 0, 0, 0, 0, 
+                    bme.data.pressure, 
+                    bme.data.temperature, 
+                    bme.data.humidity, 
+                    mpu.acceleration[0], 
+                    mpu.acceleration[1], 
+                    mpu.acceleration[2], 
+                    mpu.gyro[0], 
+                    mpu.gyro[1], 
+                    mpu.gyro[2], 
+                    mpu.temperature
+                ]
+            )
             continue
 
         count += 1
