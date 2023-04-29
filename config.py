@@ -105,50 +105,47 @@ with open(savedata, 'w', newline='') as csvfile:
     while True:
         image = picam2.capture_file(f"image_{count}.jpg")
         if gps.has_fix:
-            writer.writerow(
-                [
-                    time.monotonic(), 
-                    count, 
-                    gps.latitude_degrees, 
-                    gps.latitude_minutes, 
-                    gps.longitude_degrees, 
-                    gps.longitude_minutes, 
-                    gps.altitude_m, 
-                    gps.speed_knots, 
-                    gps.satellites, 
-                    bme.data.pressure, 
-                    bme.data.temperature, 
-                    bme.data.humidity, 
-                    mpu.acceleration[0], 
-                    mpu.acceleration[1], 
-                    mpu.acceleration[2], 
-                    mpu.gyro[0], 
-                    mpu.gyro[1], 
-                    mpu.gyro[2], 
-                    mpu.temperature,
-                    image
-                ]
-            )
+            lat_deg = gps.latitude_degrees, 
+            lat_min = gps.latitude_minutes, 
+            long_deg = gps.longitude_degrees, 
+            long_min = gps.longitude_minutes, 
+            alt = gps.altitude_m, 
+            speed = gps.speed_knots, 
+            satno = gps.satellites
         else:
-            writer.writerow(
-                [
-                    time.monotonic(), 
-                    count, 
-                    0, 0, 0, 0, 0, 0, 0, 
-                    bme.data.pressure, 
-                    bme.data.temperature, 
-                    bme.data.humidity, 
-                    mpu.acceleration[0], 
-                    mpu.acceleration[1], 
-                    mpu.acceleration[2], 
-                    mpu.gyro[0], 
-                    mpu.gyro[1], 
-                    mpu.gyro[2], 
-                    mpu.temperature,
-                    image
-                ]
-            )
+            lat_deg = 0,
+            lat_min = 0,
+            long_deg = 0,
+            long_min = 0,
+            alt = 0,
+            speed = 0, 
+            satno = 0,
             continue
 
+        writer.writerow(
+            [
+                time.monotonic(), 
+                count, 
+                lat_deg,
+                lat_min,
+                long_deg,
+                long_min,
+                alt,
+                speed,
+                satno,
+                bme.data.pressure, 
+                bme.data.temperature, 
+                bme.data.humidity, 
+                mpu.acceleration[0], 
+                mpu.acceleration[1], 
+                mpu.acceleration[2], 
+                mpu.gyro[0], 
+                mpu.gyro[1], 
+                mpu.gyro[2], 
+                mpu.temperature,
+                image
+            ]
+        )
+        
         count += 1
         time.sleep(1)
