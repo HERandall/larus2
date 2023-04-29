@@ -44,6 +44,11 @@ try:
 except (RuntimeError, IndexError):
     bme = bme680.BME680(bme680.I2C_ADDR_SECONDARY)
 
+bme.set_humidity_oversample(bme680.OS_2X)
+bme.set_pressure_oversample(bme680.OS_4X)
+bme.set_temperature_oversample(bme680.OS_8X)
+bme.set_filter(bme680.FILTER_SIZE_3)
+
 i2c = board.I2C()
 mpu = adafruit_mpu6050.MPU6050(i2c)
 
