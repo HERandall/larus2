@@ -1,22 +1,18 @@
 # Set up Instructions for Fresh Pi OS, install all into the init.d folder. Default I2C is 0x76
-# 
+
 # sudo apt install  python3
 #                   -y python3-picamera2
 #                   git
-#                   -y ffmpeg
 #                   time
 #                   python3-smbus
 #                   vim
-#
-# pip3 install  gps
-#               mpu6050-raspberrypi
-#                   
-# sudo apt-get install gpsd gpsd-clients
-#
-# curl https://get.pimoroni.com/bme680 | bash
-#
+#                   adafruit-circuitpython-mpu6050
+#                   bme680
+#                   adafruit-circuitpython-gps
+#                   gpsd gpsd-clients
+
 # sudo raspi-config         # # Enable Glamour in Pi Settings
-#
+
 # cd /etc/init.d
 # ssh-keygen
 # cat ~/.ssh/id_rsa.pub     # # Link to Github repo
@@ -100,7 +96,9 @@ with open(savedata, 'w', newline='') as csvfile:
 
     count = 0
     while True:
+
         image = picam2.capture_file(f"image_{count}.jpg")
+
         if gps.has_fix:
             lat_deg = gps.latitude_degrees, 
             lat_min = gps.latitude_minutes, 
@@ -145,4 +143,9 @@ with open(savedata, 'w', newline='') as csvfile:
         )
 
         count += 1
-        time.sleep(1)
+
+        if count == 3600:
+            break
+        else:
+            time.sleep(1)
+            continue
