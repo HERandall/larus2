@@ -42,7 +42,7 @@ path = os.path.join(os.path.expanduser("-"), "larus2", folder)
 os.makedirs(path, exist_ok=True)
 savedata = os.path.join(path, (f"data_{date_integer}.csv"))
 
-uart = busio.UART(boart.TX, board.RX, buadrate= 9600, timeout=10)
+uart = busio.UART(board.TX, board.RX, buadrate= 9600, timeout=10)
 gps = adafruit_gps.GPS(uart, debug=False)
 
 gps.send_command(b"PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0") #Turn on basic GGA and RMC info
