@@ -3,9 +3,6 @@
 # sudo apt install  python3
 #                   -y python3-picamera2
 #                   git
-#                   flex
-#                   bison
-#                   make
 #                   -y ffmpeg
 #                   time
 #                   python3-smbus
@@ -38,14 +35,14 @@ import adafruit_gps
 import adafruit_mpu6050
 import bme680
 import os
-from picamera2 import Picamera2, Preview
+from picamera2 import Picamera2
 from subprocess import PIPE, Popen
 
 now = datetime.datetime.now()
 date_integer = int(now.strftime('%d'))
 
 folder = f"{date_integer}"
-path = os.path.join(os.path.expanduser("-"), "Documents", folder)
+path = os.path.join(os.path.expanduser("-"), "larus2", folder)
 os.makedirs(path, exist_ok=True)
 savedata = os.path.join(path, (f"data_{date_integer}.csv"))
 
@@ -146,6 +143,6 @@ with open(savedata, 'w', newline='') as csvfile:
                 image
             ]
         )
-        
+
         count += 1
         time.sleep(1)
